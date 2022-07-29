@@ -78,7 +78,7 @@ func RegisterFolderServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.FolderService/Create", runtime.WithHTTPPathPattern("/v1/folders"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/pb.FolderService/Create", runtime.WithHTTPPathPattern("/api/v1/folders"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -141,7 +141,7 @@ func RegisterFolderServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/pb.FolderService/Create", runtime.WithHTTPPathPattern("/v1/folders"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/pb.FolderService/Create", runtime.WithHTTPPathPattern("/api/v1/folders"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -161,7 +161,7 @@ func RegisterFolderServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 }
 
 var (
-	pattern_FolderService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "folders"}, ""))
+	pattern_FolderService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "folders"}, ""))
 )
 
 var (

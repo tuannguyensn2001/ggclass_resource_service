@@ -2,8 +2,8 @@ package folder
 
 import (
 	"context"
+	"ggclass_resource_service/src/logger"
 	folderpb "ggclass_resource_service/src/pb"
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
@@ -21,7 +21,7 @@ type customError struct {
 }
 
 func (t *transport) Create(ctx context.Context, request *folderpb.CreateFolderRequest) (*folderpb.CreateFolderResponse, error) {
-	return nil, status.Error(codes.NotFound, "abcv")
+	logger.Sugar().Info(request)
 	return &folderpb.CreateFolderResponse{
 		Message: "done 123",
 	}, nil

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"ggclass_resource_service/src/config"
 	folderpb "ggclass_resource_service/src/pb"
 	"ggclass_resource_service/src/services/folder"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -35,8 +36,10 @@ func server() *cobra.Command {
 }
 
 func runGrpc(ctx context.Context, wg *sync.WaitGroup) {
-	lis, err := net.Listen("tcp", ":16000")
+	cfg := config.GetConfig()
+	lis, err := net.Listen("tcp", ":"+cfg.GrpcPort)
 	if err != nil {
+		log.Println("fail to lis", err)
 		return
 	}
 
@@ -61,7 +64,7 @@ func runGrpc(ctx context.Context, wg *sync.WaitGroup) {
 func runGateway(ctx context.Context, wg *sync.WaitGroup) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
-	conn, err := grpc.DialContext(context.Background(), "0.0.0.0:16000", grpc.WithBlock(), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.DialContext(context.Background(), "0.0.0.0:"+config.GetConfig().GrpcPort, grpc.WithBlock(), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return
 	}
@@ -74,6 +77,7 @@ func runGateway(ctx context.Context, wg *sync.WaitGroup) {
 	}()
 	mux := http.NewServeMux()
 
+	//gwmux := runtime.NewServeMux(runtime.WithErrorHandler(myhttp.ErrorHandler))
 	gwmux := runtime.NewServeMux()
 
 	mux.Handle("/", gwmux)
@@ -84,7 +88,7 @@ func runGateway(ctx context.Context, wg *sync.WaitGroup) {
 	}
 
 	gwServer := &http.Server{
-		Addr:    ":17000",
+		Addr:    ":" + config.GetConfig().HttpPort,
 		Handler: mux,
 	}
 

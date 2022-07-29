@@ -17,7 +17,7 @@ message CreateFolderResponse {
 service FolderService {
   rpc Create(CreateFolderRequest) returns (CreateFolderResponse){
     option (google.api.http) = {
-      post: "/v1/folders",
+      post: "/api/v1/folders",
       body: "*"
     };
   };
