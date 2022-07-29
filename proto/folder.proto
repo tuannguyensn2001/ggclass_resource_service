@@ -1,0 +1,24 @@
+syntax="proto3";
+
+package pb;
+
+option go_package = "./folderpb";
+
+import "google/api/annotations.proto";
+
+message CreateFolderRequest {
+  string name = 1;
+}
+
+message CreateFolderResponse {
+  string message = 1;
+}
+
+service FolderService {
+  rpc Create(CreateFolderRequest) returns (CreateFolderResponse){
+    option (google.api.http) = {
+      post: "/v1/folders",
+      body: "*"
+    };
+  };
+}
